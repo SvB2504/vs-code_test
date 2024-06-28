@@ -7,7 +7,7 @@ then
 else
     echo Backups folder already there, creating backup
 fi
-if [ n $1 ]
+if [ -z $1 ]
 then
     echo You need to give a parameter
     exit 0
