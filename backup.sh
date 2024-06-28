@@ -5,8 +5,9 @@ then
     echo Creating an backups folder in /tmp
     mkdir /tmp/backups
 else
-    echo Backups folder already there, creating backup
+    echo Backups folder already there
 fi
+echo Creating backup
 if [ -z $1 ]
 then
     echo You need to give a parameter
