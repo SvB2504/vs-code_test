@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set default values
-USER=$ID -u -n
+USER=$(whoami)
 HOMEFOLDER="/home/${USER}"
 SOURCE=$PWD
 DEST="/tmp/backups"
