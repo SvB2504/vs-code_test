@@ -22,7 +22,7 @@ echo
 if [ -z "$source" ]; then
     source=$SOURCE
 else
-    if [! -d "$source" ]; then
+    if [ ! -d "$source" ]; then
         echo "This folder does not exist"
         exit 1
     fi
@@ -36,12 +36,12 @@ echo "Enter the destination directory (default: /tmp/backups):"
 read -p "==> " dest
 echo
 
-if [ -z "$dest" ]; then
+if [ -z $dest ]; then
     dest=$DEST
 fi
 
-if [! -d "$dest" ]; then
-    mkdir -p "$dest"
+if [ ! -d $dest ]; then
+    mkdir -p $dest
 fi
 
 # Create backup directory
@@ -51,6 +51,6 @@ if [ -d "$dest" ]; then
     exit 1
 fi
 
-mkdir "$dest"
+mkdir $dest
 echo "Creating backup..."
-cp -r "$source" "$dest"
+cp -r $source $dest
