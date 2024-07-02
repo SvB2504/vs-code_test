@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Set default values
+USER=$ID -u -n
+HOMEFOLDER="/home/${USER}"
 SOURCE=$PWD
 DEST="/tmp/backups"
 
@@ -22,6 +24,10 @@ echo
 if [ -z "$source" ]; then
     source=$SOURCE
 else
+    if [ ${source:0:1} = "~" ]
+    then
+        source=${HOMEFOLDER}${source:1}
+    fi
     if [ ! -d "$source" ]; then
         echo "This folder does not exist"
         exit 1
