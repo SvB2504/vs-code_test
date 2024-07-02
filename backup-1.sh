@@ -1,52 +1,56 @@
 #!/bin/bash
 
-#name of the backup
-echo Name of Backup
+# Set default values
+SOURCE=$PWD
+DEST="/tmp/backups"
+
+# Get backup name
+echo "Enter a name for the backup:"
 read -p "==> " backup
 echo
-if [ -z  $backup ] ;
-then 
-    echo you need to give a name.
-    exit 0
+
+if [ -z "$backup" ]; then
+    echo "You need to give a name."
+    exit 1
 fi
 
-#source
-echo Which directory should be backupped?
-echo If none is given your current directory is chosen.
-read -p "==> "  source
-if [ -z  $source ] ;
-then 
-    source=$PWD
-fi
-if [ ! -d $source ] ;
-then 
-    echo This folder does not exist
-    exit 0
-fi
-echo $source
+# Get source directory
+echo "Enter the directory to backup (default: current directory):"
+read -p "==> " source
 echo
-source+="/*"
-#destination
-echo Which directory should i backup to?
-echo If none is given, it will backup to "/tmp/backups".
-read -p "==> " dest
-if [ -z $dest ] ;
-then
-    dest=$"/tmp/backups"
-fi
-if [ ! -d $dest ] ;
-then
-    mkdir $dest
-fi
-dest="${dest}/${backup}"
-echo $dest
-echo
-if [ ! -d $dest ] ;
-then
-    mkdir $dest
-    echo Creating backup
-    cp -r $source $dest
+
+if [ -z "$source" ]; then
+    source=$SOURCE
 else
-    echo A backup with this name already exists, 
-    exit 0
+    if [! -d "$source" ]; then
+        echo "This folder does not exist"
+        exit 1
+    fi
 fi
+
+# Add trailing slash to source directory
+source+="/*"
+
+# Get destination directory
+echo "Enter the destination directory (default: /tmp/backups):"
+read -p "==> " dest
+echo
+
+if [ -z "$dest" ]; then
+    dest=$DEST
+fi
+
+if [! -d "$dest" ]; then
+    mkdir -p "$dest"
+fi
+
+# Create backup directory
+dest="${dest}/${backup}"
+if [ -d "$dest" ]; then
+    echo "A backup with this name already exists."
+    exit 1
+fi
+
+mkdir "$dest"
+echo "Creating backup..."
+cp -r "$source" "$dest"

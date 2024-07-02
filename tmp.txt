@@ -1,24 +1,52 @@
+#!/bin/bash
 
-if [ ! -d /tmp/backups ] ; 
-then
-    echo Creating an backups folder in /tmp
-    mkdir /tmp/backups
-else
-    echo Backups folder already there.
-fi
-if [ -z $1 ]
-then
-    echo You need to give a parameter
+#name of the backup
+echo Name of Backup
+read -p "==> " backup
+echo
+if [ -z  $backup ] ;
+then 
+    echo you need to give a name.
     exit 0
 fi
-if [ ! -d /tmp/backups/$1 ] ;
+
+#source
+echo Which directory should be backupped?
+echo If none is given your current directory is chosen.
+read -p "==> "  source
+if [ -z  $source ] ;
+then 
+    source=$PWD
+fi
+if [ ! -d $source ] ;
+then 
+    echo This folder does not exist
+    exit 0
+fi
+echo $source
+echo
+source+="/*"
+#destination
+echo Which directory should i backup to?
+echo If none is given, it will backup to "/tmp/backups".
+read -p "==> " dest
+if [ -z $dest ] ;
 then
+    dest=$"/tmp/backups"
+fi
+if [ ! -d $dest ] ;
+then
+    mkdir $dest
+fi
+dest="${dest}/${backup}"
+echo $dest
+echo
+if [ ! -d $dest ] ;
+then
+    mkdir $dest
     echo Creating backup
-    mkdir /tmp/backups/$1
-    cp -r ~/* /tmp/backups/$1
+    cp -r $source $dest
 else
     echo A backup with this name already exists, 
     exit 0
 fi
-
-(find /tmp/backups -maxdepth 0 -type d)
